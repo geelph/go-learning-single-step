@@ -6,14 +6,14 @@
 
 # 核心组件
 
-1. **<font style="color:rgb(17, 17, 51);">Logger (</font>**`*slog.Logger`**<font style="color:rgb(17, 17, 51);">)</font>**<font style="color:rgb(17, 17, 51);">: 日志记录器实例。你可以创建多个具有不同配置（如级别、处理器、属性）的 Logger。</font>
-2. **<font style="color:rgb(17, 17, 51);">Handler (</font>**`slog.Handler`**<font style="color:rgb(17, 17, 51);">)</font>**<font style="color:rgb(17, 17, 51);">: 处理日志记录的实际后端。它决定日志的格式（如文本、JSON）和输出目的地（如标准输出、文件、网络等）。标准库提供了 </font>`TextHandler`<font style="color:rgb(17, 17, 51);"> 和 </font>`JSONHandler`<font style="color:rgb(17, 17, 51);">。</font>
-3. **<font style="color:rgb(17, 17, 51);">Level (</font>**`slog.Level`**<font style="color:rgb(17, 17, 51);">)</font>**<font style="color:rgb(17, 17, 51);">: 日志级别，用于控制日志的严重程度和过滤。常见的级别有：</font>
-   - `LevelDebug` <font style="color:rgb(17, 17, 51);">(-4)</font>
-   - `LevelInfo` <font style="color:rgb(17, 17, 51);">(0) - 默认级别</font>
-   - `LevelWarn` <font style="color:rgb(17, 17, 51);">(4)</font>
-   - `LevelError` <font style="color:rgb(17, 17, 51);">(8)</font>
-4. **<font style="color:rgb(17, 17, 51);">Record (</font>**`slog.Record`**<font style="color:rgb(17, 17, 51);">)</font>**<font style="color:rgb(17, 17, 51);">: 代表一条日志记录的结构体，包含时间、级别、消息、属性等信息。通常由 </font>`<font style="color:rgb(17, 17, 51);">Handler</font>`<font style="color:rgb(17, 17, 51);"> 处理，用户较少直接操作。</font>
+1. ** Logger (**`*slog.Logger`** )** : 日志记录器实例。你可以创建多个具有不同配置（如级别、处理器、属性）的 Logger。
+2. ** Handler (**`slog.Handler`** )** : 处理日志记录的实际后端。它决定日志的格式（如文本、JSON）和输出目的地（如标准输出、文件、网络等）。标准库提供了 `TextHandler` 和 `JSONHandler` 。
+3. ** Level (**`slog.Level`** )** : 日志级别，用于控制日志的严重程度和过滤。常见的级别有：
+   - `LevelDebug` (-4)
+   - `LevelInfo` (0) - 默认级别
+   - `LevelWarn` (4)
+   - `LevelError` (8)
+4. ** Record (**`slog.Record`** )** : 代表一条日志记录的结构体，包含时间、级别、消息、属性等信息。通常由 `Handler` 处理，用户较少直接操作。
 
 # 基本用法
 
