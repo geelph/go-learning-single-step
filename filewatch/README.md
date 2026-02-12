@@ -1,3 +1,75 @@
+# 文件系统监控 - fsnotify 使用教程
+
+本项目演示了如何使用 `fsnotify` 库来监控文件系统的变化。`fsnotify` 是一个跨平台的文件系统监控库，可以监听文件或目录的各种事件。
+
+## 安装
+
+```bash
+go get github.com/fsnotify/fsnotify
+```
+
+## 基本用法
+
+### 1. 创建监控器
+
+```go
+watcher, err := fsnotify.NewWatcher()
+if err != nil {
+    log.Fatal(err)
+}
+defer watcher.Close()
+```
+
+### 2. 添加要监控的目录或文件
+
+```go
+err = watcher.Add("/path/to/directory")
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+### 3. 监听事件
+
+```go
+go func() {
+    for {
+        select {
+        case event := <-watcher.Events:
+            log.Println("Event:", event)
+            if event.Op&fsnotify.Write == fsnotify.Write {
+                log.Println("Modified file:", event.Name)
+            }
+        case err := <-watcher.Errors:
+            log.Println("Error:", err)
+        }
+    }
+}()
+```
+
+## 事件类型
+
+`fsnotify` 支持以下几种事件类型：
+
+- `fsnotify.Create`: 文件或目录被创建
+- `fsnotify.Write`: 文件被写入（内容更改）
+- `fsnotify.Remove`: 文件或目录被删除
+- `fsnotify.Rename`: 文件或目录被重命名
+- `fsnotify.Chmod`: 文件权限被修改
+
+可以通过位运算符组合检测特定事件：
+
+```go
+if event.Op&fsnotify.Create == fsnotify.Create {
+    // 处理创建事件
+}
+```
+
+## 完整示例
+
+以下是一个完整的示例，展示了如何监控一个目录及其子目录的所有变化：
+
+```go
 package main
 
 import (
@@ -131,3 +203,39 @@ func (w *Watch) watchDir(dir string) {
 		}
 	}()
 }
+
+```
+
+执行效果：
+
+```bash
+# go run main.go
+2026/02/12 15:31:26 开始监控目录 :  ./watch
+2026/02/12 15:31:26 已添加监控: E:\Source\TestScript\GoProjects\go-learning-single-step\filewatch\watch
+2026/02/12 15:31:26 监控服务已经启动
+创建文件 :  E:\Source\TestScript\GoProjects\go-learning-single-step\filewatch\watch\新建 文本文档.txt
+重命名文件 :  E:\Source\TestScript\GoProjects\go-learning-single-step\filewatch\watch\新建 文本文档.txt
+创建文件 :  E:\Source\TestScript\GoProjects\go-learning-single-step\filewatch\watch\test.txt
+写入文件 :  E:\Source\TestScript\GoProjects\go-learning-single-step\filewatch\watch\test.txt
+删除文件 :  E:\Source\TestScript\GoProjects\go-learning-single-step\filewatch\watch\test.txt
+```
+
+## 常见应用场景
+
+1. **实时同步**: 当文件发生变化时，立即同步到其他位置
+2. **热重载**: 在开发过程中，当代码改变时自动重新加载应用程序
+3. **日志监控**: 监控日志文件的变化并实时处理
+4. **备份系统**: 实时监控文件变化并备份
+
+## 注意事项
+
+- 监控目录需要相应的读取权限
+- 不同操作系统对监控数量有限制
+- 需要注意处理监控器关闭和资源释放
+- 对于递归监控，需要手动遍历子目录并添加监控
+- 监控事件是异步的，需要使用 goroutine 处理
+
+## 参考资料
+
+- [fsnotify GitHub 仓库](https://github.com/fsnotify/fsnotify)
+- [fsnotify 文档](https://pkg.go.dev/github.com/fsnotify/fsnotify)
