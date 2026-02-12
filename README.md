@@ -414,3 +414,7 @@ t.Log(r.Close())
 ### [slog](https://github.com/geelph/go-learning-single-step/tree/master/slog) (slog包学习)
 
     1: main slog包学习
+
+### [uuid](https://github.com/geelph/go-learning-single-step/tree/master/uuid)（uuid包学习）
+
+    1: main uuid包学习
