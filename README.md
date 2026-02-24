@@ -418,3 +418,7 @@ t.Log(r.Close())
 ### [uuid](https://github.com/geelph/go-learning-single-step/tree/master/uuid)（uuid包学习）
 
     1: main uuid包学习
+
+### [Elo（埃罗等级分系统）算法实现](https://github.com/geelph/go-learning-single-step/tree/master/game/elo)
+
+- Elo评分系统
