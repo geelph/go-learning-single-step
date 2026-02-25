@@ -3,7 +3,9 @@
 # Go sync.Pool 完全使用教程：高效对象复用指南
 
 > 📌 **适用版本**：Go 1.13+（含 victim cache 优化）
+>
 > 📚 **难度**：初级 → 中级 
+>
 > 💡 **核心价值**：减少 GC 压力、提升高频临时对象性能
 
 ---
@@ -286,15 +288,19 @@ ok      github.com/hwholiday/learning_tools/syncPool    3.274s
 ## 八、常见问题（FAQ）
 
 **Q：sync.Pool 能替代内存池（如 bigcache）吗？** 
+
 A：不能。sync.Pool 用于**临时对象复用**，非持久化缓存。需长期缓存请用专用缓存库。
 
 **Q：Put 后对象会被立即复用吗？** 
+
 A：不一定。受调度、GC、victim cache 影响，业务逻辑不应依赖复用时机。
 
 **Q：如何验证 Pool 是否生效？** 
+
 A：使用 `go test -bench=. -benchmem` 对比 allocs/op；或 pprof 查看 heap 分配。
 
 **Q：多个 goroutine 共用一个 Pool 安全吗？** 
+
 A：**安全**。sync.Pool 内部使用 per-P 本地池 + 全局池，无锁设计保障高并发性能。
 
 ---
