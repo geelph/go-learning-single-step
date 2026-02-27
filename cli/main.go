@@ -1,53 +1,35 @@
 package main
 
 import (
-	"fmt"
-	"github.com/urfave/cli"
+	"context"
+	"log"
 	"os"
+	"time"
+
+	"github.com/urfave/cli/v3"
 )
 
 func main() {
-	app := cli.NewApp()
-	app.Name = "howie"
-	app.Version = "1.0.0"
-	app.Email = "520@520.com"
-	app.Commands = []cli.Command{
-		{
-			Name:    "prot",
-			Aliases: []string{"p"},
-			Usage:   "用户端口",
-			Before: func(c *cli.Context) error {
-				fmt.Println("Before")
-				return nil
-			},
-			Action: func(c *cli.Context) {
-				fmt.Println("Action")
-				fmt.Println(c.Args().First())
-			},
-			After: func(c *cli.Context) error {
-				fmt.Println("After")
-				return nil
-			},
-		},
-		{
-			Name:    "isdebug",
-			Aliases: []string{"p"},
-			Usage:   "is debug",
-			Before: func(c *cli.Context) error {
-				fmt.Println("Before")
-				return nil
-			},
-			Action: func(c *cli.Context) {
-				fmt.Println("Action")
-				fmt.Println(c.Args().First())
-			},
-			After: func(c *cli.Context) error {
-				fmt.Println("After")
-				return nil
-			},
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	app := &cli.Command{
+		Name:  "timeout",
+		Usage: "Presentation context timeout",
+		Action: func(ctx context.Context, cmd *cli.Command) error {
+			log.Println("Starting task...")
+			// 模拟长时间运行的任务
+			select {
+			case <-time.After(15 * time.Second):
+				log.Println("Task completed.")
+			case <-ctx.Done():
+				log.Println("The task was cancelled or timed out.")
+			}
+			return nil
 		},
 	}
-	if err := app.Run(os.Args); err != nil {
-		panic(err)
+
+	if err := app.Run(ctx, os.Args); err != nil {
+		log.Fatal(err)
 	}
 }
